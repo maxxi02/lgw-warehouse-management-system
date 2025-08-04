@@ -1,9 +1,9 @@
 // app/api/deliveries/[id]/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/lib/mongodb";
-import { ToShip } from "@/lib/models/toship";
 import { getServerSession } from "@/lib/actions";
+import { ToShip } from "@/lib/models/toship";
+import { connectDB } from "@/lib/mongodb";
 import { sendEventToUser } from "@/lib/sse";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
@@ -85,7 +85,6 @@ export async function PATCH(
 
     await delivery.save();
 
-    // Send real-time notification to admin/cashier who created the shipment
     try {
       if (delivery.markedBy?.email) {
         sendEventToUser(delivery.markedBy.email, {

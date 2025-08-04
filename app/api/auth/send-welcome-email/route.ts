@@ -1,8 +1,9 @@
 // api/send-welcome-email/route.ts
+import { RESEND_API_KEY } from "@/lib/constants/env";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(RESEND_API_KEY || "");
 const SENDER_EMAIL = process.env.SENDER_EMAIL || "noreply@yourdomain.com";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 

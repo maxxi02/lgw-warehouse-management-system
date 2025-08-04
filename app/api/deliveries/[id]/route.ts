@@ -7,11 +7,11 @@ import { sendEventToUser } from "@/lib/sse";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession();
-    const { id } = await params;
+    const { id } = await context.params;
 
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

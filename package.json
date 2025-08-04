@@ -90,6 +90,9 @@
     "typescript": "^5"
   },
   "overrides": {
+    "react-day-picker": {
+      "date-fns": "3.6.0"
+    },
     "@teachablemachine/image": {
       "@tensorflow/tfjs": "$@tensorflow/tfjs"
     }

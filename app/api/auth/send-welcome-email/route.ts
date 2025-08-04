@@ -3,7 +3,6 @@ import { RESEND_API_KEY } from "@/lib/constants/env";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(RESEND_API_KEY || "");
 const SENDER_EMAIL = process.env.SENDER_EMAIL || "noreply@yourdomain.com";
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
@@ -21,7 +20,14 @@ export async function POST(request: NextRequest) {
   try {
     const body: SendWelcomeEmailRequest = await request.json();
     const { user, tempPassword, isResend = false } = body;
-
+    const apiKey = RESEND_API_KEY || process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "Resend API key is not configured" },
+        { status: 500 }
+      );
+    }
+    const resend = new Resend(apiKey);
     // Validate required fields
     if (!user?.email || !user?.name || !tempPassword) {
       return NextResponse.json(

@@ -59,6 +59,7 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      //this is already fixed.
       components={{
         Chevron: ({ orientation, className, ...props }) => {
           const Icon = orientation === "left" ? ChevronLeft : ChevronRight;

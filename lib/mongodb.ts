@@ -18,6 +18,6 @@ export async function connectDB() {
     console.error("MongoDB connection failed:", error);
   }
 }
-
+//try
 export const client = new MongoClient(MONGODB_URI);
 export const db = client?.db("test");

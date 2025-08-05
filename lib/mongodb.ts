@@ -1,18 +1,12 @@
-import { Db, MongoClient } from "mongodb";
+import { MongoClient } from "mongodb";
 import mongoose from "mongoose";
 
+const MONGODB_URI = process.env.MONGODB_URI || "";
+
 let isConnected = false;
-let client: MongoClient | null = null;
-let db: Db | null = null;
 
 export async function connectDB() {
-  if (isConnected) {
-    return;
-  }
-
-  const MONGODB_URI = process.env.MONGODB_URI;
-  if (!MONGODB_URI) {
-    console.error("MONGODB_URI not found");
+  if (isConnected || !MONGODB_URI) {
     return;
   }
 
@@ -25,23 +19,6 @@ export async function connectDB() {
   }
 }
 
-// Initialize client and db only when needed
-export function getMongoClient(): MongoClient {
-  if (!client) {
-    const MONGODB_URI = process.env.MONGODB_URI;
-    if (!MONGODB_URI) {
-      throw new Error("MONGODB_URI not configured");
-    }
-    client = new MongoClient(MONGODB_URI);
-  }
-  return client;
-}
-
-export function getDB(): Db {
-  if (!db) {
-    const mongoClient = getMongoClient();
-    const dbName = process.env.MONGODB_DATABASE || "lgw-warehouse";
-    db = mongoClient.db(dbName);
-  }
-  return db;
-}
+// Optional: if you need native MongoDB client
+export const client = new MongoClient(MONGODB_URI);
+export const db = client?.db("test");

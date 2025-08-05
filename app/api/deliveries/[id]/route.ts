@@ -10,8 +10,6 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    await connectDB();
-
     const session = await getServerSession();
     const { id } = await context.params;
 
@@ -36,6 +34,8 @@ export async function PATCH(
         { status: 400 }
       );
     }
+
+    await connectDB();
 
     // Find the delivery by ID
     const delivery = await ToShip.findById(id);

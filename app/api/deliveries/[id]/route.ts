@@ -37,7 +37,6 @@ export async function PATCH(
 
     await connectDB();
 
-    // Find the delivery by ID
     const delivery = await ToShip.findById(id);
 
     if (!delivery) {

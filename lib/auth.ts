@@ -9,7 +9,11 @@ import { SENDER_EMAIL } from "./constants/env";
 
 const resend = getResend();
 export const auth = betterAuth({
-  trustedOrigins: ["http://localhost:3000", process.env.NEXT_PUBLIC_URL!],
+  trustedOrigins: [
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_URL!
+      : "http://localhost:3000",
+  ],
   database: mongodbAdapter(db),
   schema: {
     user: {

@@ -19,6 +19,5 @@ export async function connectDB() {
   }
 }
 
-// Optional: if you need native MongoDB client
 export const client = new MongoClient(MONGODB_URI);
 export const db = client?.db("test");

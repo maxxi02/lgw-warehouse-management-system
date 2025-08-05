@@ -1,5 +1,4 @@
 // api/send-welcome-email/route.ts
-import { RESEND_API_KEY } from "@/lib/constants/env";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -13,21 +12,27 @@ interface SendWelcomeEmailRequest {
     role: string;
   };
   tempPassword: string;
-  isResend?: boolean; // Flag to distinguish between new user and resend
+  isResend?: boolean;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: SendWelcomeEmailRequest = await request.json();
     const { user, tempPassword, isResend = false } = body;
-    const apiKey = RESEND_API_KEY || process.env.RESEND_API_KEY;
+
+    // Get API key at runtime, not at module level
+    const apiKey = process.env.RESEND_API_KEY;
+
     if (!apiKey) {
       return NextResponse.json(
         { error: "Resend API key is not configured" },
         { status: 500 }
       );
     }
+
+    // Initialize Resend only when needed with valid API key
     const resend = new Resend(apiKey);
+
     // Validate required fields
     if (!user?.email || !user?.name || !tempPassword) {
       return NextResponse.json(

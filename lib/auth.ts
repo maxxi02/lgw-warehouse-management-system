@@ -1,15 +1,15 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
-import { MongoClient } from "mongodb";
-import { MONGODB_URI, SENDER_EMAIL } from "./constants/env";
 import { twoFactor, admin as adminPlugin } from "better-auth/plugins";
 import { ac, admin, cashier, delivery, user } from "@/lib/permissions";
 import { getResend } from "./resend";
-const client = new MongoClient(MONGODB_URI || "");
-const db = client.db();
+import { db } from "./mongodb";
+import { SENDER_EMAIL } from "./constants/env";
+
 const resend = getResend();
 export const auth = betterAuth({
+  trustedOrigins: ["http://localhost:3000", process.env.NEXT_PUBLIC_URL!],
   database: mongodbAdapter(db),
   schema: {
     user: {

@@ -3,12 +3,12 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
 import { MongoClient } from "mongodb";
 import { MONGODB_URI, SENDER_EMAIL } from "./constants/env";
-import { resend } from "./resend";
 import { twoFactor, admin as adminPlugin } from "better-auth/plugins";
 import { ac, admin, cashier, delivery, user } from "@/lib/permissions";
+import { getResend } from "./resend";
 const client = new MongoClient(MONGODB_URI || "");
 const db = client.db();
-
+const resend = getResend();
 export const auth = betterAuth({
   database: mongodbAdapter(db),
   schema: {
